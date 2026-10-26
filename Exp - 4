@@ -1,0 +1,81 @@
+Exp-4:
+Write a program in Dart that find the area of a circle using function.
+import 'package:flutter/material.dart';
+import 'dart:math';
+void main() => runApp(const CircleAreaApp());
+class CircleAreaApp extends StatelessWidget {
+const CircleAreaApp({super.key});
+@override
+Widget build(BuildContext context) {
+return MaterialApp(
+title: 'Circle Area Calculator',
+theme: ThemeData(
+primarySwatch: Colors.blue,
+scaffoldBackgroundColor: Colors.white,
+inputDecorationTheme: const InputDecorationTheme(
+border: OutlineInputBorder(),
+),
+),
+home: const CircleAreaScreen(),
+);
+}
+}
+class CircleAreaScreen extends StatefulWidget {
+const CircleAreaScreen({super.key});
+@override
+State<CircleAreaScreen> createState() => _CircleAreaScreenState();
+}
+class _CircleAreaScreenState extends State<CircleAreaScreen> {
+final TextEditingController _controller = TextEditingController();
+String _result = '';
+double calculateArea(double radius) => pi * radius * radius;
+void _calculate() {
+final input = _controller.text.trim();
+final radius = double.tryParse(input);
+if (radius == null || radius < 0) {
+setState(() {
+_result = 'Please enter a valid positive number';
+});
+return;
+}
+final area = calculateArea(radius);
+setState(() {
+_result = 'Area of circle: ${area.toStringAsFixed(2)}';
+});
+}
+@override
+Widget build(BuildContext context) {
+return Scaffold(
+appBar: AppBar(title: const Text('Circle Area Calculator')),
+body: Padding(
+padding: const EdgeInsets.all(24),
+child: Column(
+mainAxisAlignment: MainAxisAlignment.center,
+children: [
+TextField(
+controller: _controller,
+keyboardType:
+const TextInputType.numberWithOptions(decimal: true),
+decoration: const InputDecoration(
+labelText: 'Enter radius',
+hintText: 'e.g. 3.5',
+),
+onSubmitted: (_) => _calculate(),
+),
+const SizedBox(height: 20),
+ElevatedButton(
+onPressed: _calculate,
+child: const Text('Calculate'),
+),
+const SizedBox(height: 24),
+Text(
+_result,
+style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+)
+],
+),
+),
+);
+}
+}
+Output:
