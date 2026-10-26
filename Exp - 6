@@ -1,0 +1,133 @@
+Exp-6:
+Create a simple Calculator application in Flutter.
+import 'package:flutter/material.dart';
+void main() => runApp(const CalculatorApp());
+class CalculatorApp extends StatelessWidget {
+const CalculatorApp({super.key});
+@override
+Widget build(BuildContext context) {
+return MaterialApp(
+title: 'Simple Calculator',
+theme: ThemeData(
+primarySwatch: Colors.deepPurple,
+scaffoldBackgroundColor: Colors.white,
+inputDecorationTheme: const InputDecorationTheme(
+border: OutlineInputBorder(),
+),
+elevatedButtonTheme: ElevatedButtonThemeData(
+style: ElevatedButton.styleFrom(
+padding: const EdgeInsets.symmetric(vertical: 16),
+textStyle: const TextStyle(fontSize: 20),
+),
+),
+),
+home: const CalculatorScreen(),
+);
+}
+}
+class CalculatorScreen extends StatefulWidget {
+const CalculatorScreen({super.key});
+@override
+State<CalculatorScreen> createState() => _CalculatorScreenState();
+}
+class _CalculatorScreenState extends State<CalculatorScreen> {
+final TextEditingController _controller1 = TextEditingController();
+final TextEditingController _controller2 = TextEditingController();
+String _result = '';
+double? _parseInput(String input) {
+return double.tryParse(input.trim());
+}
+void _calculate(String operation) {
+final num1 = _parseInput(_controller1.text);
+final num2 = _parseInput(_controller2.text);
+if (num1 == null || num2 == null) {
+setState(() {
+_result = 'Please enter valid numbers';
+});
+return;
+}
+double res;
+switch (operation) {
+case '+':
+res = num1 + num2;
+break;
+case '-':
+res = num1 - num2;
+break;
+case '*':
+res = num1 * num2;
+break;
+case '/':
+if (num2 == 0) {
+setState(() {
+_result = 'Cannot divide by zero';
+});
+return;
+}
+res = num1 / num2;
+break;
+default:
+res = 0;
+}
+setState(() {
+_result = 'Result: ${res.toStringAsFixed(4)}';
+});
+}
+@override
+Widget build(BuildContext context) {
+return Scaffold(
+appBar: AppBar(title: const Text('Simple Calculator')),
+body: Padding(
+padding: const EdgeInsets.all(24),
+child: Column(
+mainAxisAlignment: MainAxisAlignment.center,
+children: [
+TextField(
+controller: _controller1,
+keyboardType: const TextInputType.numberWithOptions(decimal: true),
+decoration: const InputDecoration(
+labelText: 'Enter first number',
+),
+),
+const SizedBox(height: 16),
+TextField(
+controller: _controller2,
+keyboardType: const TextInputType.numberWithOptions(decimal: true),
+decoration: const InputDecoration(
+labelText: 'Enter second number',
+),
+),
+const SizedBox(height: 24),
+Wrap(
+spacing: 16,
+children: [
+ElevatedButton(
+onPressed: () => _calculate('+'),
+child: const Text('+'),
+),
+ElevatedButton(
+onPressed: () => _calculate('-'),
+child: const Text('-'),
+),
+ElevatedButton(
+onPressed: () => _calculate('*'),
+child: const Text('*'),
+),
+ElevatedButton(
+onPressed: () => _calculate('/'),
+child: const Text('/'),
+),
+],
+),
+const SizedBox(height: 32),
+Text(
+_result,
+style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+),
+],
+),
+),
+);
+}
+}
+Output:
