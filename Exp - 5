@@ -1,0 +1,61 @@
+Exp-5:
+Write a Dart program to create a class Laptop with properties [id, name, ram] and create 3 objects of it and print all details.
+main.dart:
+import 'package:flutter/material.dart';
+void main() => runApp(const LaptopApp());
+class Laptop {
+final int id;
+final String name;
+final int ram;
+const Laptop({required this.id, required this.name, required this.ram});
+}
+class LaptopApp extends StatelessWidget {
+const LaptopApp({super.key});
+@override
+Widget build(BuildContext context) {
+return MaterialApp(
+title: 'Laptop List',
+theme: ThemeData(
+primarySwatch: Colors.teal,
+scaffoldBackgroundColor: Colors.white,
+),
+home: const LaptopListScreen(),
+);
+}
+}
+class LaptopListScreen extends StatelessWidget {
+const LaptopListScreen({super.key});
+final List<Laptop> laptops = const [
+Laptop(id: 101, name: 'Dell XPS 13', ram: 16),
+Laptop(id: 102, name: 'MacBook Pro', ram: 32),
+Laptop(id: 103, name: 'Lenovo ThinkPad', ram: 8),
+];
+@override
+Widget build(BuildContext context) {
+return Scaffold(
+appBar: AppBar(title: const Text('Laptops')),
+body: ListView.builder(
+padding: const EdgeInsets.all(16),
+itemCount: laptops.length,
+itemBuilder: (context, index) {
+final laptop = laptops[index];
+return Card(
+margin: const EdgeInsets.symmetric(vertical: 8),
+elevation: 3,
+child: ListTile(
+leading: CircleAvatar(
+backgroundColor: Colors.teal.shade700,
+child: Text(
+laptop.id.toString(),
+style: const TextStyle(color: Colors.white),
+),
+),
+title: Text(laptop.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+subtitle: Text('RAM: ${laptop.ram} GB'),
+),
+);
+},
+),
+);
+}
+Output:
