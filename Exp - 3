@@ -1,0 +1,67 @@
+Exp-3:
+Write an application as ask the user for a number and determine whether the number is prime.
+main.dart:
+import 'package:flutter/material.dart';
+void main() => runApp(const PrimeApp());
+class PrimeApp extends StatelessWidget {
+const PrimeApp({super.key});
+@override
+Widget build(BuildContext context) {
+return MaterialApp(
+title: 'Prime Checker',
+theme: ThemeData.light(), // minimal light theme
+home: const PrimeScreen(),
+);
+}
+}
+class PrimeScreen extends StatefulWidget {
+const PrimeScreen({super.key});
+@override
+State<PrimeScreen> createState() => PrimeScreenState();
+}
+class PrimeScreenState extends State<PrimeScreen> {
+final TextEditingController _ctrl = TextEditingController();
+String _result = '';
+bool isPrime(int n) {
+if (n <= 1) return false;
+for (int i = 2; i * i <= n; i++) {
+if (n % i == 0) return false;
+}
+return true;
+}
+void check() {
+final num = int.tryParse(_ctrl.text);
+setState(() {
+if (num == null) {
+_result = 'Enter a valid integer';
+} else {
+_result = isPrime(num) ? '$num is prime' : '$num is not prime';
+}
+});
+}
+@override
+Widget build(BuildContext context) {
+return Scaffold(
+appBar: AppBar(title: const Text('Prime Checker')),
+body: Padding(
+padding: const EdgeInsets.all(24),
+child: Column(
+mainAxisAlignment: MainAxisAlignment.center,
+children: [
+TextField(
+controller: _ctrl,
+keyboardType: TextInputType.number,
+decoration: const InputDecoration(labelText: 'Enter a number'),
+onSubmitted: (_) => check(),
+),
+const SizedBox(height: 16),
+ElevatedButton(onPressed: check, child: const Text('Check')),
+const SizedBox(height: 24),
+Text(_result, style: const TextStyle(fontSize: 20)),
+],
+),
+),
+);
+}
+}
+Output:
