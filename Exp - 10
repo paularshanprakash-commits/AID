@@ -1,0 +1,56 @@
+Exp-10:
+Code for Applying Flutter with JSON.
+main.dart:
+import 'dart:convert'; // for json decoding
+import 'package:flutter/material.dart';
+void main() {
+runApp(const MyApp());
+}
+// Simple User model class
+class User {
+final String name;
+final String email;
+User({required this.name, required this.email});
+// Factory constructor to create User from JSON map
+factory User.fromJson(Map<String, dynamic> json) {
+return User(
+name: json['name'],
+email: json['email'],
+);
+}
+}
+class MyApp extends StatelessWidget {
+const MyApp({super.key});
+// Sample JSON data as a string
+final String sampleJson = '''
+[
+{"name": "Alice", "email": "alice@example.com"},
+{"name": "Bob", "email": "bob@example.com"},
+{"name": "Charlie", "email": "charlie@example.com"}
+]
+''';
+@override
+Widget build(BuildContext context) {
+// Parse the JSON string
+List<dynamic> jsonList = json.decode(sampleJson);
+// Convert to List<User>
+List<User> users = jsonList.map((json) => User.fromJson(json)).toList();
+return MaterialApp(
+home: Scaffold(
+appBar: AppBar(title: const Text('Flutter JSON Example')),
+body: ListView.builder(
+itemCount: users.length,
+itemBuilder: (context, index) {
+User user = users[index];
+return ListTile(
+leading: CircleAvatar(child: Text(user.name[0])),
+title: Text(user.name),
+subtitle: Text(user.email),
+);
+},
+),
+),
+);
+}
+}
+Output:
